@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Species Prediction</title>
+</head>
+<body>
+    <h1>Fish Species Prediction</h1>
+    <form id="predictionForm">
+        <label for="weight">Weight:</label>
+        <input type="text" id="weight" name="weight"><br><br>
+        <label for="length1">Length1:</label>
+        <input type="text" id="length1" name="length1"><br><br>
+        <label for="length2">Length2:</label>
+        <input type="text" id="length2" name="length2"><br><br>
+        <label for="length3">Length3:</label>
+        <input type="text" id="length3" name="length3"><br><br>
+        <label for="height">Height:</label>
+        <input type="text" id="height" name="height"><br><br>
+        <label for="width">Width:</label>
+        <input type="text" id="width" name="width"><br><br>
+        <button type="button" onclick="makePrediction()">Predict</button>
+    </form>
+    <h2 id="result"></h2>
+
+    <script>
+        function makePrediction() {
+            const formData = {
+                weight: parseFloat(document.getElementById('weight').value),
+                length1: parseFloat(document.getElementById('length1').value),
+                length2: parseFloat(document.getElementById('length2').value),
+                length3: parseFloat(document.getElementById('length3').value),
+                height: parseFloat(document.getElementById('height').value),
+                width: parseFloat(document.getElementById('width').value),
+            };
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Predicted Species: ' + data.prediction;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
